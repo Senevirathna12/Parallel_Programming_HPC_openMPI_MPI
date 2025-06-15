@@ -138,24 +138,31 @@ int main() {
     end = omp_get_wtime();
     parQ_time = end - start;
 
-    // Sequential BubbleSort
-    start = omp_get_wtime();
-    seqBubbleSort(seqBubble, n);
-    end = omp_get_wtime();
-    seqB_time = end - start;
+    if(n<= 50000){
+        // Sequential BubbleSort
+        start = omp_get_wtime();
+        seqBubbleSort(seqBubble, n);
+        end = omp_get_wtime();
+        seqB_time = end - start;
+    }
 
-    // Parallel BubbleSort
-    start = omp_get_wtime();
-    parBubbleSort(parBubble, n);
-    end = omp_get_wtime();
-    parB_time = end - start;
+    
+        // Parallel BubbleSort
+        start = omp_get_wtime();
+        parBubbleSort(parBubble, n);
+        end = omp_get_wtime();
+        parB_time = end - start;
+    
 
     printf("\n=== Results (Array size: %d) ===\n", n);
     printf("----------------------------------------\n");
     printf("Algorithm          | Sequential | Parallel\n");
     printf("----------------------------------------\n");
     printf("QuickSort          | %9.6fs | %9.6fs\n", seqQ_time, parQ_time);
-    printf("BubbleSort         | %9.6fs | %9.6fs\n", seqB_time, parB_time);
+    if(n<= 50000){
+        printf("BubbleSort         | %9.6fs | %9.6fs\n", seqB_time, parB_time);
+    }
+    
     printf("----------------------------------------\n\n");
 
      printf("Performance Comparison:\n");
@@ -170,14 +177,17 @@ int main() {
     }
 
     // BubbleSort
-    if (seqB_time < parB_time) {
-        printf("BubbleSort: Sequential is faster (%.6fs vs %.6fs)\n", seqB_time, parB_time);
-    } else if (parB_time < seqB_time) {
-        printf("BubbleSort: Parallel is faster (%.6fs vs %.6fs)\n", parB_time, seqB_time);
-    } else {
-        printf("BubbleSort: Both have same performance (%.6fs)\n", seqB_time);
-    }
+    if(n<= 50000){
+        if (seqB_time < parB_time) {
+            printf("BubbleSort: Sequential is faster (%.6fs vs %.6fs)\n", seqB_time, parB_time);
+         } else if (parB_time < seqB_time) {
+            printf("BubbleSort: Parallel is faster (%.6fs vs %.6fs)\n", parB_time, seqB_time);
+        } else {
+            printf("BubbleSort: Both have same performance (%.6fs)\n", seqB_time);
+        }
 
+    }
+    
 
     // Display few sorted values to verify correctness
     printf("\nFirst 100 Sorted Elements (QuickSort - Sequential): ");
