@@ -147,11 +147,11 @@ int main() {
     }
 
     
-        // Parallel BubbleSort
-        start = omp_get_wtime();
-        parBubbleSort(parBubble, n);
-        end = omp_get_wtime();
-        parB_time = end - start;
+    // Parallel BubbleSort
+    start = omp_get_wtime();
+    parBubbleSort(parBubble, n);
+    end = omp_get_wtime();
+    parB_time = end - start;
     
 
     printf("\n=== Results (Array size: %d) ===\n", n);
@@ -161,6 +161,8 @@ int main() {
     printf("QuickSort          | %9.6fs | %9.6fs\n", seqQ_time, parQ_time);
     if(n<= 50000){
         printf("BubbleSort         | %9.6fs | %9.6fs\n", seqB_time, parB_time);
+    }else{
+        printf("BubbleSort         | ------- s | %9.6fs\n", parB_time);
     }
     
     printf("----------------------------------------\n\n");
@@ -186,11 +188,13 @@ int main() {
             printf("BubbleSort: Both have same performance (%.6fs)\n", seqB_time);
         }
 
+    }else{
+        printf("BubbleSort: Parallel is faster (%.6fs )\n", parB_time);
     }
     
 
     // Display few sorted values to verify correctness
-    printf("\nFirst 100 Sorted Elements (QuickSort - Sequential): ");
+    printf("\nFirst 100 Sorted Elements (QuickSort - Sequential): \n");
     for (int i = 0; i < 100 && i < n; i++) {
         printf("%d ", seqQuick[i]);
     }
