@@ -28,7 +28,7 @@ void seqQuickSort(int arr[], int low, int high) {
     }
 }
 
-// Parallel QuickSort with OpenMP and threshold
+// Parallel QuickSort
 void parQuickSort(int arr[], int low, int high) {
     const int THRESHOLD = 500; // avoid overhead for small segments
     if (low < high) {
@@ -36,6 +36,8 @@ void parQuickSort(int arr[], int low, int high) {
             seqQuickSort(arr, low, high);
             return;
         }
+
+        // printf("Thread %d is sorting range [%d, %d] (size: %d)\n", omp_get_thread_num(), low, high, high - low + 1);
 
         int pivot = arr[high];
         int i = low - 1;
@@ -127,6 +129,14 @@ int main() {
     seqQuickSort(seqQuick, 0, n - 1);
     end = omp_get_wtime();
     seqQ_time = end - start;
+
+    // #pragma omp parallel
+    // {
+    //     #pragma omp single
+    //     {
+    //         printf("Total threads: %d\n", omp_get_num_threads());
+    //     }
+    // }
 
     // Parallel QuickSort
     start = omp_get_wtime();
