@@ -194,6 +194,28 @@ void mpiBubbleSort(int *data, int n, int rank, int size)
     free(local);
 }
 
+void hybridBubbleSort(int* data, int n, int rank, int size) {
+    int chunk = n / size;
+    int* local = malloc(chunk * sizeof(int));
+
+    MPI_Scatter(data, chunk, MPI_INT, local, chunk, MPI_INT, 0, MPI_COMM_WORLD);
+
+    parBubbleSort(local, chunk); // OpenMP bubble sort
+
+    int* gathered = NULL;
+    if (rank == 0)
+        gathered = malloc(n * sizeof(int));
+
+    MPI_Gather(local, chunk, MPI_INT, gathered, chunk, MPI_INT, 0, MPI_COMM_WORLD);
+
+    if (rank == 0) {
+        parBubbleSort(gathered, n); // final sort
+        memcpy(data, gathered, n * sizeof(int));
+        free(gathered);
+    }
+
+    free(local);
+}
 
 
 int main()
