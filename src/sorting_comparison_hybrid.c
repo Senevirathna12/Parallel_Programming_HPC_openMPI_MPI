@@ -44,7 +44,7 @@ void seqBubbleSort(int arr[], int n) {
     }
 }
 
-// OpenMP QuickSort Task version
+// OpenMP QuickSort Task 
 void hybridQuickSortTask(int *arr, int low, int high) {
     if (low < high) {
         int pivot = arr[high];
@@ -121,7 +121,6 @@ void mpiHybridSort(int *data, int n, int rank, int size, void (*sortFunc)(int *,
     MPI_Gatherv(local, local_n, MPI_INT, gathered, counts, displs, MPI_INT, 0, MPI_COMM_WORLD);
 
     if (rank == 0 && gathered != NULL) {
-        // ✅ Sort again to ensure global order
         hybridQuickSort(gathered, n);
         memcpy(data, gathered, n * sizeof(int));
         free(gathered);
