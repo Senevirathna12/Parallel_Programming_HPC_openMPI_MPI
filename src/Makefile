@@ -16,8 +16,8 @@ CC = gcc
 #Comparision
 
 CFLAGS = -Wall -O3 -fopenmp
-TARGET = sorting_comparison
-SOURCE = sorting_comparison.c
+TARGET = sorting_comparison_openmp
+SOURCE = sorting_comparison_openmp.c
 
 all: $(TARGET)
 
