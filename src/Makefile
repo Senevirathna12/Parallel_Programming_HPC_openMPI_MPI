@@ -1,37 +1,50 @@
-CC = gcc
-#CC = mpicc
+# === Compiler selection ===
+GCC = gcc
+MPICC = mpicc
 
-#Sequential
+# === Flags ===
+CFLAGS_OMP = -Wall -O3 -fopenmp
+CFLAGS_MPI = -Wall -O3
+CFLAGS_HYBRID = -Wall -O3 -fopenmp
 
-#CFLAGS = -Wall -O2
-#TARGET = sequential_sort
-#SOURCE = sequential_sort.c
+# === Targets and sources ===
+OUTPUT_DIR = ../output
+$(shell mkdir -p $(OUTPUT_DIR))
 
-#OpenMP
+OMP_TARGET = $(OUTPUT_DIR)/sorting_comparison_openmp
+OMP_SRC = sorting_comparison_openmp.c
 
-#CFLAGS = -Wall -O2 -fopenmp
-#TARGET = openmp_sort
-#SOURCE = openmp_sort.c
+MPI_TARGET = $(OUTPUT_DIR)/sorting_comparison_mpi
+MPI_SRC = sorting_comparison_mpi.c
 
-#Comparision
+HYBRID_TARGET = $(OUTPUT_DIR)/sorting_comparison_hybrid
+HYBRID_SRC = sorting_comparison_hybrid.c
 
-CFLAGS = -Wall -O3 -fopenmp
-TARGET = sorting_comparison_openmp
-SOURCE = sorting_comparison_openmp.c
+# === Default target ===
+all: $(OMP_TARGET) $(MPI_TARGET) $(HYBRID_TARGET)
 
-all: $(TARGET)
+# === Build Rules ===
+$(OMP_TARGET): $(OMP_SRC)
+	$(GCC) $(CFLAGS_OMP) -o $@ $<
 
-$(TARGET): $(SOURCE)
-	$(CC) $(CFLAGS) -o ../output/$(TARGET) $(SOURCE)
+$(MPI_TARGET): $(MPI_SRC)
+	$(MPICC) $(CFLAGS_MPI) -o $@ $<
 
+$(HYBRID_TARGET): $(HYBRID_SRC)
+	$(MPICC) $(CFLAGS_HYBRID) -o $@ $<
+
+# === Run Targets ===
+run-omp: $(OMP_TARGET)
+	$(OMP_TARGET)
+
+run-mpi: $(MPI_TARGET)
+	mpirun -np 4 $(MPI_TARGET)
+
+run-hybrid: $(HYBRID_TARGET)
+	export OMP_NUM_THREADS=2 && mpirun -np 2 $(HYBRID_TARGET)
+
+# === Clean target ===
 clean:
-	rm -f ../output/$(TARGET)
+	rm -f $(OUTPUT_DIR)/sorting_comparison_*
 
-.PHONY: all clean
-
-
-
-
-
-
-
+.PHONY: all clean run-omp run-mpi run-hybrid
