@@ -189,7 +189,7 @@ int main(int argc, char **argv)
             printf("%d ", original[i]);
         printf("\n");
     }
-
+    
     double seq_q_time = 0.0, seq_b_time = 0.0, mpi_q_time = 0.0, mpi_b_time = 0.0;
 
     if (rank == 0)

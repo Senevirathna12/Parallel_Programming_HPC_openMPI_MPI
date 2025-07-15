@@ -33,6 +33,7 @@ void seqQuickSort(int arr[], int low, int high)
     }
 }
 
+
 // Parallel QuickSort(openMP)
 void parQuickSort(int arr[], int low, int high)
 {
