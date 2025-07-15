@@ -1,5 +1,5 @@
-#CC = gcc
-CC = mpicc
+CC = gcc
+#CC = mpicc
 
 #Sequential
 
