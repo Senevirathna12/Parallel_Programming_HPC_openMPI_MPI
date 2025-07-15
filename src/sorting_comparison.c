@@ -1,3 +1,4 @@
+#include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -28,7 +29,7 @@ void seqQuickSort(int arr[], int low, int high) {
     }
 }
 
-// Parallel QuickSort
+// Parallel QuickSort(openMP)
 void parQuickSort(int arr[], int low, int high) {
     const int THRESHOLD = 500; // avoid overhead for small segments
     if (low < high) {
@@ -75,7 +76,7 @@ void seqBubbleSort(int arr[], int n) {
     }
 }
 
-// Parallel BubbleSort
+// Parallel BubbleSort (openMP)
 void parBubbleSort(int arr[], int n) {
     int phase, i, temp;
     for (phase = 0; phase < n; phase++) {
