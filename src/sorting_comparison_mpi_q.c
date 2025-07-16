@@ -4,7 +4,7 @@
 #include <time.h>
 #include <mpi.h>
 
-// ----- Common Utilities -----
+
 void swap(int *a, int *b) {
     int t = *a;
     *a = *b;

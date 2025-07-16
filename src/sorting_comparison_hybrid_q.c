@@ -52,27 +52,27 @@ void hybridQuickSortTask(int *arr, int low, int high)
         swap(&arr[i + 1], &arr[high]);
         int pi = i + 1;
 
-#pragma omp task shared(arr)
+        #pragma omp task shared(arr)
         hybridQuickSortTask(arr, low, pi - 1);
 
-#pragma omp task shared(arr)
+        #pragma omp task shared(arr)
         hybridQuickSortTask(arr, pi + 1, high);
     }
 }
 
 void hybridQuickSort(int *arr, int n)
 {
-#pragma omp parallel
+    #pragma omp parallel
     {
-#pragma omp single nowait
+        #pragma omp single nowait
         {
             hybridQuickSortTask(arr, 0, n - 1);
-#pragma omp taskwait
+            #pragma omp taskwait
         }
     }
 }
 
-// MPI + OpenMP Hybrid Sort wrapper
+// MPI + OpenMP Hybrid Sort 
 void mpiHybridSort(int *data, int n, int rank, int size, void (*sortFunc)(int *, int))
 {
     int *counts = malloc(size * sizeof(int));
