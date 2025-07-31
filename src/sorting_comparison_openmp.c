@@ -61,13 +61,13 @@ void parQuickSort(int arr[], int low, int high)
         swap(&arr[i + 1], &arr[high]);
         int pi = i + 1;
 
-#pragma omp task shared(arr)
+        #pragma omp task shared(arr)
         parQuickSort(arr, low, pi - 1);
 
-#pragma omp task shared(arr)
+        #pragma omp task shared(arr)
         parQuickSort(arr, pi + 1, high);
 
-#pragma omp taskwait
+        #pragma omp taskwait
     }
 }
 
@@ -180,7 +180,7 @@ int main()
     end = omp_get_wtime();
     parQ_time = end - start;
 
-    if (n <= 50000)
+    if (n <= 200000)
     {
         // Sequential BubbleSort
         start = omp_get_wtime();
@@ -200,7 +200,7 @@ int main()
     printf("Algorithm          | Sequential | Parallel(openMP)\n");
     printf("----------------------------------------\n");
     printf("QuickSort          | %9.6fs | %9.6fs\n", seqQ_time, parQ_time);
-    if (n <= 50000)
+    if (n <= 200000)
     {
         printf("BubbleSort         | %9.6fs | %9.6fs\n", seqB_time, parB_time);
     }
@@ -228,7 +228,7 @@ int main()
     }
 
     // BubbleSort
-    if (n <= 50000)
+    if (n <= 200000)
     {
         if (seqB_time < parB_time)
         {
@@ -255,7 +255,7 @@ int main()
     double acc_quick = calculate_accuracy(seqQuick, parQuick, n);
     printf("\nAccuracy of Parallel QuickSort (compared to Sequential): %.2f%%\n", acc_quick);
 
-    if (n <= 50000)
+    if (n <= 200000)
     {
         double acc_bubble = calculate_accuracy(seqBubble, parBubble, n);
         printf("Accuracy of Parallel BubbleSort (compared to Sequential): %.2f%%\n", acc_bubble);
