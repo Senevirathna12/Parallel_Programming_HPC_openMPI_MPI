@@ -46,7 +46,7 @@ $(HYBRID_B_TARGET): $(HYBRID_B_SRC)
 
 # === Run Targets ===
 run-omp: $(OMP_TARGET)
-	$(OMP_TARGET)
+	OMP_NUM_THREADS=4 $(OMP_TARGET)
 
 run-mpi-q: $(MPI_Q_TARGET)
 	mpirun -np 4 $(MPI_Q_TARGET)
